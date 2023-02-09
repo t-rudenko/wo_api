@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: burp-deployment
+  labels:
+    app: burpee-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: burpee-api
+  template:
+    metadata:
+      labels:
+        app: burpee-api
+    spec:
+      containers:
+        - name: burpee-api
+          image: m0nk22/burpee-api
+          env:
+            - name: MONGO_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-configmap
+                  key: db_url
+          ports:
+            - containerPort: 80
+  
